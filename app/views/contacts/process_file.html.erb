@@ -1,0 +1,44 @@
+<%= flash[:notice] %>
+<div>
+    <h3>Save the data to the database</h3>
+    <%= form_tag save_list_contacts_path, multipart: true do %>
+        <%= hidden_field_tag :filePath, @filePath %>
+        <%= fields_for :list do %>
+            Name of the list:&nbsp;&nbsp;<%= text_field_tag :title %>
+        <% end %>
+        <br /><br />
+        Column with phone number:&nbsp;&nbsp;<%= text_field_tag :column , '', maxlength: 3, size: 3, class: "column-input"%>
+        <br /><br />
+        Headers:&nbsp;&nbsp;<%= select_tag :headerRow, options_for_select([ "Yes", "No" ], "Yes")%>
+        <br /><br />
+        <%= submit_tag "Upload" %>
+    <% end %>
+</div>
+<br />
+<table class="pre-table">
+    <tr>
+        <% @rowarray[1].each_with_index do |cell,index| %>
+            <td>
+                <% if @rowarray[1].length > 1 %>
+                    <%= index %>
+                <% else %>
+                    0
+                <% end %>
+            </td>
+        <% end %>
+    </tr>
+    <tr>
+        <% @rowarray[0].each do |cell| %>
+            <td><%= cell %></td>
+        <% end %>
+    </tr>
+    <tr>
+        <% @rowarray[1].each do |cell| %>
+            <td><%= cell %></td>
+        <% end %>
+    </tr>
+
+</table>
+<!--<% @rowarray.each do |row| %>-->
+    <!--<%= row %>-->
+<!--<% end %>-->

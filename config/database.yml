@@ -1,0 +1,16 @@
+default: &default
+      adapter: postgresql
+      encoding: unicode
+      pool: 5
+      username: phones #<%= ENV['USERNAME'] %>
+      password: password7 #<%= ENV['PASSWORD'] %>
+      host:     <%= ENV['IP'] %>
+      timeout: 20000
+
+development:
+  <<: *default
+  database: phones_development
+
+test:
+  <<: *default
+  database: phones_test

@@ -1,0 +1,22 @@
+<% if !@contacts.nil? && !@contacts.empty? %>
+    <table class="pre-table">
+      <thead>
+        <tr>
+          <th>List</th>
+          <th>Phone</th>
+          <th>Extras</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @contacts.each do |contact| %>
+          <tr>
+            <td data-th="List"><%= contact.list.title %></td>
+            <td data-th="Phone"><%= contact.phone %></td>
+            <td data-th="Extra"><%= contact.extra %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+<% else %>
+    Nothing found
+<% end %>

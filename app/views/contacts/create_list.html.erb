@@ -1,0 +1,5 @@
+<%= flash.now[:notice] %>
+<div>
+    <h2>File you requested is ready for download:</h2>
+    <%= @filename %> (<%= link_to "download", contacts_download_path(format: "csv", scope: @contacts, file: @filename, listId: @listId, sampleSize: @sampleSize) %>)
+</div>

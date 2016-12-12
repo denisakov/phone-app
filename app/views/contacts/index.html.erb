@@ -1,0 +1,26 @@
+<%= flash.now[:notice] %>
+<br />
+
+<div>
+    <h3>Upload CSV file</h3>
+    <%= form_tag({action:  :load_to_drive}, multipart: true) do %>
+        <%= file_field_tag :file %>
+        <%= submit_tag "Upload" %>
+    <% end %>
+</div>
+<br />
+<div>
+  <h3>Files ready for processing</h3>
+  <% @files.each_with_index do |file, index| %>
+      <%= form_tag process_file_contacts_path, multipart: true do %>
+        <ul>
+          <%= hidden_field_tag :file, file %>
+          <%= submit_tag "Process" %>
+          <%= index+1 %>. <%= file %>
+        </ul>
+      <% end %>
+    
+  <% end %>
+</div>
+<br />
+<br />

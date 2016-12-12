@@ -1,0 +1,14 @@
+<%= flash.now[:notice] %>
+<br />
+
+<h1>Find a number</h1>
+<br />
+<%= form_tag search_contacts_path, :method => 'get', :id => "phone_search" do %>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :name => nil %>
+    <br />
+    <br />
+    <div id="contacts">
+        <%= render 'contacts' %>
+    </div>
+<% end %>
