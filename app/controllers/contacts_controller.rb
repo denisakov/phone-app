@@ -31,16 +31,16 @@ class ContactsController < ApplicationController
   end
   
   def save_list
-    begin
+    #begin
       list = List.where(title: params[:title]).first || List.create!(title: params[:title])
       SplitListJob.perform_async(params, list)
       redirect_to root_url, notice: "File is being filtered of duplicates and will be available shortly."
       #counts = Contact.saveAll(params,list)
       #puts counts
       #redirect_to root_url, notice: counts[0].to_s + ' records were added. There were ' + counts[1].to_s + ' double records found. Also there were '+ counts[2].to_s + ' records, where phone numbers were not recognized.'
-    rescue
-      redirect_to root_url, notice: "Something went wrong."
-    end
+    #rescue
+      #redirect_to root_url, notice: "Something went wrong."
+    #end
   end
   
   def load_to_drive
