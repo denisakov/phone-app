@@ -14,12 +14,12 @@ class SplitListJob
             arrayChunks = rawData.in_groups_of(2000,false)
             puts arrayChunks.count
             arrayChunks.each_with_index do |chunk,y|
-                #if y === 0
-                    SaveListJob.new.perform(chunk,list,headerRow,column)
-                #else
-                    #headerRow = "No"
-                    #SaveListJob.new.perform(chunk,list,headerRow,column)
-                #end
+                if y === 0
+                    SaveListJob.perform_async(chunk,list,headerRow,column)
+                else
+                    headerRow = "No"
+                    SaveListJob.perform_async(chunk,list,headerRow,column)
+                end
             end #chunking
             File.delete(params[:filePath])
             #if List.where(id: list.id).first.contacts.count === 0
