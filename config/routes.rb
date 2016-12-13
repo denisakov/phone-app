@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :lists
   get 'contacts/index'
-
+  get 'lists/index'
   get 'contacts/download'
   get 'contacts/create_list'
   get 'contacts/search'
