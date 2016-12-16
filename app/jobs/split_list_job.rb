@@ -15,10 +15,12 @@ class SplitListJob
             puts arrayChunks.count
             arrayChunks.each_with_index do |chunk,y|
                 if y === 0
-                    SaveListJob.perform_async(chunk,list,headerRow,column)
+                    ImportWorker.perform_async(chunk,list.id,headerRow,column)
+                    #SaveListJob.perform_async(chunk,list,headerRow,column)
                 else
                     headerRow = "No"
-                    SaveListJob.perform_async(chunk,list,headerRow,column)
+                    ImportWorker.perform_async(chunk,list.id,headerRow,column)
+                    #SaveListJob.perform_async(chunk,list,headerRow,column)
                 end
             end #chunking
             File.delete(params[:filePath])
