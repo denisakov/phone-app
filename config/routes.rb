@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   get 'contacts/search'
   get 'contacts/process_file'
   
+  resources :lists do
+    collection { post :index }
+  end
+
   resources :contacts do
     collection { post :process_file }
   end
