@@ -11,7 +11,7 @@ class SplitListJob
             @newCount = 0
             @notNumber = 0
             rawData = CSV.read(params[:filePath])
-            arrayChunks = rawData.in_groups_of(2000,false)
+            arrayChunks = rawData.in_groups_of(1000,false)
             puts arrayChunks.count
             arrayChunks.each_with_index do |chunk,y|
                 if y === 0
