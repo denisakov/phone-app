@@ -16,6 +16,7 @@
               
               <% #if list.contacts.count == 0 && list.created_at < Time.now - 10800 %>
                 <%= link_to 'Destroy', list, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <%= link_to "<i class='icon-trash'></i> Delete".html_safe, list, :confirm => "Are you sure you want to delete item: " + list.title + "?" ,:method => :delete%>
               <% #end %>
             </td>
             <td>
