@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get 'contacts/process_file'
   
   resources :lists do
-    collection { post :index }
+    collection { get :index }
   end
 
   resources :contacts do
