@@ -6,7 +6,7 @@ preload_app!
 
 rackup      DefaultRackup
 port        ENV['PORT']     || 3000
-environment ENV['RACK_ENV'] || 'development'
+environment ENV['RACK_ENV'] || 'production'
 
 before_fork do  
   puts "Puma master process about to fork. Closing existing Active record connections."
