@@ -1,6 +1,6 @@
 development:  
   :concurrency: 5
 production:  
-  :concurrency: 21
+  :concurrency: 20
 :queues:
   - default
