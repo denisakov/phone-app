@@ -45,9 +45,9 @@ class ContactsController < ApplicationController
       column = params[:column].to_i
       headerRow = params[:headerRow]
       filePath = params[:filePath]
-      len = params[:len]
-      UltimateWorker.perform_async(len,column, headerRow, filePath, list.id)
-      #UltimateJob.perform_async(params, list)
+      #len = params[:len]
+      UltimateWorker.perform_async(column, headerRow, filePath, list.id)
+      #UltimateJob.perform_async(column, headerRow, filePath, list.id)
       redirect_to root_url, notice: "File is being filtered of duplicates and will be available shortly."
       #counts = Contact.saveAll(params,list)
       #puts counts
