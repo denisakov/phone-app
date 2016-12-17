@@ -77,5 +77,14 @@ class ContactsController < ApplicationController
     end
   end # end dowload
   
+  def destroy
+    @list.destroy
+    #DeleteWorker.perform_async(@list.id)
+    #DeleteListJob.perform_async(@list.id)
+    respond_to do |format|
+      format.html { redirect_to lists_url, notice: 'List was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
 
 end
