@@ -2,7 +2,7 @@ class ContactsController < ApplicationController
   
   require 'csv'
   def index
-    @contacts = Contact.limit(3)
+    #@contacts = Contact.limit(3)
     fileList = Dir.glob("#{Rails.root}/public/uploads/*.csv")
     @files = processFileList(fileList)
   end
@@ -22,7 +22,16 @@ class ContactsController < ApplicationController
   def process_file
     begin
       #@myfile = Dir.glob("#{Rails.root}/public/uploads/*.csv" + params[:file])
-      @rowarray = CSV.read("#{Rails.root}/public/uploads/" + params[:file])[0,2]
+      #@rowarray = CSV.read("#{Rails.root}/public/uploads/" + params[:file])[0,2]
+      @rowarray = []
+      File.open("#{Rails.root}/public/uploads/" + params[:file], "r") do |file|
+        csv = CSV.new(file, headers: false)
+        @rowarray << csv.first
+        @rowarray << csv.first
+        #puts @rowarray.to_a
+      end
+      @len = %x{sed -n '=' "#{Rails.root}/public/uploads/#{params[:file]}" | wc -l}.to_i
+      #puts @len
       @filePath = "#{Rails.root}/public/uploads/" + params[:file]
       #puts @rowarray[1]
     rescue
@@ -31,16 +40,21 @@ class ContactsController < ApplicationController
   end
   
   def save_list
-    #begin
+    begin
       list = List.where(title: params[:title]).first || List.create!(title: params[:title])
-      UltimateJob.perform_async(params, list)
+      column = params[:column].to_i
+      headerRow = params[:headerRow]
+      filePath = params[:filePath]
+      len = params[:len]
+      UltimateWorker.perform_async(len,column, headerRow, filePath, list.id)
+      #UltimateJob.perform_async(params, list)
       redirect_to root_url, notice: "File is being filtered of duplicates and will be available shortly."
       #counts = Contact.saveAll(params,list)
       #puts counts
       #redirect_to root_url, notice: counts[0].to_s + ' records were added. There were ' + counts[1].to_s + ' double records found. Also there were '+ counts[2].to_s + ' records, where phone numbers were not recognized.'
-    #rescue
-      #redirect_to root_url, notice: "Something went wrong."
-    #end
+    rescue
+      redirect_to root_url, notice: "Something went wrong."
+    end
   end
   
   def load_to_drive
