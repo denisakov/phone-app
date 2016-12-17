@@ -33,7 +33,7 @@ class ContactsController < ApplicationController
   def save_list
     #begin
       list = List.where(title: params[:title]).first || List.create!(title: params[:title])
-      SplitListJob.perform_async(params, list)
+      UltimateJob.perform_async(params, list)
       redirect_to root_url, notice: "File is being filtered of duplicates and will be available shortly."
       #counts = Contact.saveAll(params,list)
       #puts counts
