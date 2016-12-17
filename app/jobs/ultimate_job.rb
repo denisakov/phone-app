@@ -2,16 +2,18 @@ class UltimateJob
   
   include SuckerPunch::Job
   require 'csv'
-  def perform(params, list)
-            column = params[:column].to_i
-            headerRow = params[:headerRow]
+  def perform(column, headerRow,filePath, listId)
             @doubleCount = 0
             @newCount = 0
             @notNumber = 0
-            data = CSV.read(params[:filePath])
             contactsNew = []
-            len = data.length
-            data.each_with_index do |row,i|
+            CSV.foreach(filePath).with_index do |row,z|
+               @len = z.to_i+1
+            end
+            options = {:encoding => 'UTF-8', :skip_blanks => true}
+            CSV.foreach(filePath, options).with_index do |row, i|
+            #data = CSV.read(filePath)
+            #data.each_with_index do |row,i|
                 if headerRow === "Yes" && i === 0
                     puts row
                     next
@@ -34,9 +36,9 @@ class UltimateJob
                                 end
                             end
                         else
-                            if headerRow === "Yes" && !data[0][index].nil? && !cell.nil?
-                                @extraStr = @extraStr + data[0][index] + ": " + cell  + "; "
-                            elsif !data[0][index].nil? && !cell.nil?
+                            if headerRow === "Yes" && !row[index].nil? && !cell.nil?
+                                @extraStr = @extraStr + row[index] + ": " + cell  + "; "
+                            elsif !row[index].nil? && !cell.nil?
                                 @extraStr = @extraStr + cell  + "; "
                             else
                                 @extraStr = @extraStr + "; "
@@ -56,7 +58,7 @@ class UltimateJob
                             next
                         else
                             @newCount = @newCount + 1
-                            contactsNew << Contact.new({phone: @phoneNo, extra: @extraStr, list_id: list.id})
+                            contactsNew << Contact.new({phone: @phoneNo, extra: @extraStr, list_id: listId})
                             if contactsNew.count == 1000 || i == len - 1
                                 Contact.import contactsNew
                                 contactsNew.clear
@@ -67,8 +69,8 @@ class UltimateJob
                 end #if
             end # end data.foreach
             #File.delete(params[:filePath])
-            if List.where(id: list.id).first.contacts.count === 0
-                List.where(id: list.id).first.delete
+            if List.where(id: listId).first.contacts.count === 0
+                List.where(id: listId).first.delete
             end
             #return @newCount,@doubleCount,@notNumber
             GC.start(full_mark: false, immediate_sweep: false)

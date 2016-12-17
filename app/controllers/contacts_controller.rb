@@ -30,7 +30,7 @@ class ContactsController < ApplicationController
         @rowarray << csv.first
         #puts @rowarray.to_a
       end
-      @len = %x{sed -n '=' "#{Rails.root}/public/uploads/#{params[:file]}" | wc -l}.to_i
+      #@len = %x{sed -n '=' "#{Rails.root}/public/uploads/#{params[:file]}" | wc -l}.to_i
       #puts @len
       @filePath = "#{Rails.root}/public/uploads/" + params[:file]
       #puts @rowarray[1]

@@ -2,22 +2,17 @@ class UltimateWorker
   
 include Sidekiq::Worker
   require 'csv'
-  def perform(len,column, headerRow,filePath, listId)
-            
-            
+  def perform(column, headerRow,filePath, listId)
             @doubleCount = 0
             @newCount = 0
             @notNumber = 0
             contactsNew = []
-            #len = data.length
+            CSV.foreach(filePath).with_index do |row,z|
+               @len = z.to_i+1
+            end
             options = {:encoding => 'UTF-8', :skip_blanks => true}
-
             CSV.foreach(filePath, options).with_index do |row, i|
-            
-            #end
-            
             #data = CSV.read(filePath)
-            
             #data.each_with_index do |row,i|
                 if headerRow === "Yes" && i === 0
                     puts row
