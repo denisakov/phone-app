@@ -12,8 +12,6 @@ class UltimateJob
             end
             options = {:encoding => 'UTF-8', :skip_blanks => true}
             CSV.foreach(filePath, options).with_index do |row, i|
-            #data = CSV.read(filePath)
-            #data.each_with_index do |row,i|
                 if headerRow === "Yes" && i === 0
                     puts row
                     next
@@ -47,10 +45,8 @@ class UltimateJob
                     end # end row.each_with_index
                     #puts @extraStr
                     contact = Contact.where(phone: @phoneNo)
-                    #contactInsideNewList = contactsNew.index @phoneNo
                     contactInsideNewList = contactsNew.select {|x| x["phone"] == @phoneNo }
                     if contact.count == 1 || !contactInsideNewList.empty?
-                    #if !contactInsideNewList.empty?
                         @doubleCount = @doubleCount + 1
                         next
                     else
@@ -59,7 +55,7 @@ class UltimateJob
                         else
                             @newCount = @newCount + 1
                             contactsNew << Contact.new({phone: @phoneNo, extra: @extraStr, list_id: listId})
-                            if contactsNew.count == 1000 || i == len - 1
+                            if contactsNew.count == 1000 || i == @len - 1
                                 Contact.import contactsNew
                                 contactsNew.clear
                             end
@@ -68,7 +64,7 @@ class UltimateJob
                     end # end if !contact.nil?
                 end #if
             end # end data.foreach
-            #File.delete(params[:filePath])
+            File.delete(params[:filePath])
             if List.where(id: listId).first.contacts.count === 0
                 List.where(id: listId).first.delete
             end
