@@ -4,8 +4,18 @@ class ContactsController < ApplicationController
   def index
     fileList = Dir.glob("#{Rails.root}/public/uploads/*.csv")
     @files = processFileList(fileList)
+    @busy = checkProcessing()
   end
   
+  def checkProcessing()
+    processingFileList = Dir.glob("#{Rails.root}/public/uploads/processing/*.csv")
+    if processingFileList.empty?
+      return true
+    else
+      return false
+    end
+  end
+
   def search
     @contacts = Contact.search(params[:search])
   end
@@ -20,14 +30,18 @@ class ContactsController < ApplicationController
   
   def process_file
     begin
-       @rowarray = []
+      @rowarray = []
       File.open("#{Rails.root}/public/uploads/" + params[:file], "r") do |file|
         csv = CSV.new(file, headers: false)
         @rowarray << csv.first
         @rowarray << csv.first
         #puts @rowarray.to_a
+        File.open(Rails.root.join('public', 'uploads', 'processing', params[:file]), 'wb') do |newFile|
+          newFile.write(file.read)
+        end
       end
-      @filePath = "#{Rails.root}/public/uploads/" + params[:file]
+      File.delete("#{Rails.root}/public/uploads/" + params[:file])
+      @filePath = "#{Rails.root}/public/uploads/processing/" + params[:file]
     rescue
       redirect_to root_url, notice: "Invalid CSV file format."
     end

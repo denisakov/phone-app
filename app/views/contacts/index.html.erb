@@ -15,7 +15,9 @@
       <%= form_tag process_file_contacts_path, multipart: true do %>
         <ul>
           <%= hidden_field_tag :file, file %>
-          <%= submit_tag "Process" %>
+          <% if @busy == true %>
+            <%= submit_tag "Process" %>
+          <% end %>
           <%= index+1 %>. <%= file %>
         </ul>
       <% end %>
