@@ -44,9 +44,9 @@ class UltimateJob
                         end
                     end # end row.each_with_index
                     #puts @extraStr
-                    contact = Contact.where(phone: @phoneNo)
+                    contact = Contact.exists?(phone: @phoneNo)
                     contactInsideNewList = contactsNew.select {|x| x["phone"] == @phoneNo }
-                    if contact.count == 1 || !contactInsideNewList.empty?
+                    if contact || !contactInsideNewList.empty?
                         @doubleCount = @doubleCount + 1
                         next
                     else
@@ -65,8 +65,9 @@ class UltimateJob
                 end #if
             end # end data.foreach
             File.delete(params[:filePath])
-            if List.where(id: listId).first.contacts.count === 0
-                List.where(id: listId).first.delete
+            list = ::List.where(id: listId).first
+            if list.contacts.count === 0
+                list.delete
             end
             #return @newCount,@doubleCount,@notNumber
             GC.start(full_mark: false, immediate_sweep: false)
