@@ -67,7 +67,7 @@ class UltimateJob
                     end # end if !contact.nil?
                 end #if
             end # end data.foreach
-            File.delete(params[:filePath])
+            File.delete(filePath)
             list = ::List.where(id: listId).first
             if list.contacts.count === 0
                 list.delete

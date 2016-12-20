@@ -10,9 +10,9 @@ class ContactsController < ApplicationController
   def checkProcessing()
     processingFileList = Dir.glob("#{Rails.root}/public/uploads/processing/*.csv")
     if processingFileList.empty?
-      return true
-    else
       return false
+    else
+      return processFileList(processingFileList)
     end
   end
 
