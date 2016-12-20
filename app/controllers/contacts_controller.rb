@@ -61,8 +61,12 @@ class ContactsController < ApplicationController
   end
   
   def load_to_drive
+    uploaded_io = params[:file]
+    File.open(Rails.root.join('public', 'uploads', uploaded_io.original_filename), 'wb') do |file|
+      file.write(uploaded_io.read)
+    end
     redirect_to root_url, notice: "File has been uploaded."
-    UploadJob.new.perform(params)
+    #UploadJob.new.perform(params)
     
   end
 
