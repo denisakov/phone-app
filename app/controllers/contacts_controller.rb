@@ -62,7 +62,7 @@ class ContactsController < ApplicationController
   
   def load_to_drive
     redirect_to root_url, notice: "File has been uploaded."
-    UploadJob.perform_async(params)
+    UploadJob.new.perform(params)
     
   end
 
