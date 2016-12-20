@@ -29,7 +29,7 @@ class ContactsController < ApplicationController
   end
   
   def process_file
-    begin
+    #begin
       @rowarray = []
       File.open("#{Rails.root}/public/uploads/" + params[:file], "r") do |file|
         csv = CSV.new(file, headers: false)
@@ -42,9 +42,9 @@ class ContactsController < ApplicationController
       end
       File.delete("#{Rails.root}/public/uploads/" + params[:file])
       @filePath = "#{Rails.root}/public/uploads/processing/" + params[:file]
-    rescue
-      redirect_to root_url, notice: "Invalid CSV file format."
-    end
+    #rescue
+      #redirect_to root_url, notice: "Invalid CSV file format."
+    #end
   end
   
   def save_list
