@@ -5,7 +5,7 @@ default: &default
       username: phones #<%= ENV['USERNAME'] %>
       password: password7 #<%= ENV['PASSWORD'] %>
       host:     <%= ENV['IP'] %>
-      timeout: 20000
+      timeout: 15000
 
 development:
   <<: *default
